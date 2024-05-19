@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+
 plugins {
     java
     id("org.springframework.boot") version "3.2.5"
@@ -57,4 +59,8 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.named<BootBuildImage>("bootBuildImage") {
+    imageName = "antonio3a/${project.name}:${project.version}"
 }
