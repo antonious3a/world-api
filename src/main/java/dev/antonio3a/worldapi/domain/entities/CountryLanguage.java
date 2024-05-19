@@ -18,17 +18,16 @@ public class CountryLanguage {
     @MapsId("countryCode")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ColumnDefault("''")
-    @JoinColumn(name = "CountryCode", nullable = false)
+    @JoinColumn(name = "CountryCode", nullable = false, columnDefinition = "char(3)")
     private Country country;
 
     @NotNull
     @ColumnDefault("'F'")
-    @Lob
-    @Column(name = "IsOfficial", nullable = false)
+    @Column(name = "IsOfficial", nullable = false, columnDefinition = "char(3)")
     private String isOfficial;
 
     @NotNull
     @ColumnDefault("0.0")
-    @Column(name = "Percentage", nullable = false)
+    @Column(name = "Percentage", nullable = false, columnDefinition = "decimal(4,1)")
     private Double percentage;
 }

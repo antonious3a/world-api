@@ -24,13 +24,13 @@ public class CountryLanguageId implements Serializable {
     @Size(max = 3)
     @NotNull
     @ColumnDefault("''")
-    @Column(name = "CountryCode", nullable = false, length = 3)
+    @Column(name = "CountryCode", nullable = false, length = 3, columnDefinition = "char(3)")
     private String countryCode;
 
     @Size(max = 30)
     @NotNull
     @ColumnDefault("''")
-    @Column(name = "Language", nullable = false, length = 30)
+    @Column(name = "Language", nullable = false, length = 30, columnDefinition = "char(30)")
     private String language;
 
     @Override

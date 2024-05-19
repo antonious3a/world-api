@@ -21,19 +21,19 @@ public class City {
     @Size(max = 35)
     @NotNull
     @ColumnDefault("''")
-    @Column(name = "Name", nullable = false, length = 35)
+    @Column(name = "Name", nullable = false, length = 35, columnDefinition = "char(35)")
     private String name;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ColumnDefault("''")
-    @JoinColumn(name = "CountryCode", nullable = false)
+    @JoinColumn(name = "CountryCode", nullable = false, columnDefinition = "char(3)")
     private Country country;
 
     @Size(max = 20)
     @NotNull
     @ColumnDefault("''")
-    @Column(name = "District", nullable = false, length = 20)
+    @Column(name = "District", nullable = false, length = 20, columnDefinition = "char(20)")
     private String district;
 
     @NotNull
