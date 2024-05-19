@@ -24,7 +24,7 @@ tasks.jacocoTestReport {
     }
 }
 
-tasks.sonarqube {
+tasks.sonar {
     dependsOn(tasks.test)
 }
 
@@ -63,4 +63,10 @@ tasks.withType<Test> {
 
 tasks.named<BootBuildImage>("bootBuildImage") {
     imageName = "antonio3a/${project.name}:${project.version}"
+}
+
+sonar {
+    properties {
+        property("sonar.junit.reportPaths", "build/test-results/test/*.xml")
+    }
 }
