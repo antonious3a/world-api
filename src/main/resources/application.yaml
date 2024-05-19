@@ -1,3 +1,27 @@
+server:
+  port: 8088
+
 spring:
   application:
     name: world-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/world?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: antonio3a
+    password: Antonio.3A
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
