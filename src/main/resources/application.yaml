@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 9088
 
 spring:
   application:
@@ -25,3 +25,10 @@ logging:
     org:
       hibernate:
         sql: debug
+
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+    displayRequestDuration: true
