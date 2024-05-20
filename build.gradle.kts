@@ -1,3 +1,4 @@
+import org.springframework.boot.buildpack.platform.build.PullPolicy
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
@@ -63,6 +64,7 @@ tasks.withType<Test> {
 
 tasks.named<BootBuildImage>("bootBuildImage") {
     imageName = "antonio3a/${project.name}:${project.version}"
+    pullPolicy = PullPolicy.IF_NOT_PRESENT
 }
 
 sonar {
