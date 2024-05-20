@@ -1,5 +1,6 @@
 package dev.antonio3a.worldapi.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,6 +28,7 @@ public class City {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ColumnDefault("''")
+    @JsonIgnore
     @JoinColumn(name = "CountryCode", nullable = false, columnDefinition = "char(3)")
     private Country country;
 
