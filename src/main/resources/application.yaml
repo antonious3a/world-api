@@ -32,13 +32,3 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
     displayRequestDuration: true
-
-keycloak:
-  realm: antonio3a-realm
-  auth-server-url: http://localhost:9180/auth
-  ssl-required: external
-  resource: antonio3a-world-api
-  credentials:
-    secret: Xi1hFrWjokjqvFIv5qOiUg9wjrAfbiKQ
-  use-resource-role-mappings: true
-  bearer-only: true
