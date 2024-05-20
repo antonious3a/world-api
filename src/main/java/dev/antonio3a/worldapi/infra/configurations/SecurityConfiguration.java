@@ -1,5 +1,7 @@
 package dev.antonio3a.worldapi.infra.configurations;
 
+import dev.antonio3a.worldapi.infra.util.MyJwtAuthenticationConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -12,7 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true)
+@RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    private final MyJwtAuthenticationConverter myJwtAuthenticationConverter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -29,7 +34,9 @@ public class SecurityConfiguration {
                                 .permitAll()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
-                        oauth2ResourceServer.jwt(jwtConfigurer -> {})
+                        oauth2ResourceServer.jwt(jwtConfigurer ->
+                                jwtConfigurer.jwtAuthenticationConverter(myJwtAuthenticationConverter)
+                        )
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement
