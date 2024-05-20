@@ -2,6 +2,7 @@ package dev.antonio3a.worldapi.api.controllers;
 
 import dev.antonio3a.worldapi.domain.entities.Country;
 import dev.antonio3a.worldapi.domain.services.CountryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/world/api/countries")
+@SecurityRequirement(name = "JWT Bearer")
 public class CountryController {
 
     private final CountryService countryService;

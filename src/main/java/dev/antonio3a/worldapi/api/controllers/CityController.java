@@ -2,13 +2,15 @@ package dev.antonio3a.worldapi.api.controllers;
 
 import dev.antonio3a.worldapi.domain.entities.City;
 import dev.antonio3a.worldapi.domain.services.CityService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/world/api/cities")
 @RequiredArgsConstructor
+@RequestMapping("/world/api/cities")
+@SecurityRequirement(name = "JWT Bearer")
 public class CityController {
 
     private final CityService cityService;
