@@ -22,7 +22,7 @@ public class CountryController {
     public Page<Country> getCountries(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size,
                                          @RequestParam(defaultValue = "ASC") String sortDirection,
-                                         @RequestParam(defaultValue = "id") String... sortBy) {
+                                         @RequestParam(defaultValue = "code") String... sortBy) {
         return countryService.getCountries(page, size, sortDirection, sortBy);
     }
 }
