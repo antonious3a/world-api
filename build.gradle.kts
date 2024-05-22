@@ -8,12 +8,20 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.5"
     id("io.spring.dependency-management") version "1.1.4"
-    id("jacoco")
     id("org.sonarqube") version "5.0.0.4638"
+    id("jacoco")
+    id("idea")
 }
 
 group = "dev.antonio3a"
 version = "0.0.1-SNAPSHOT"
+
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
