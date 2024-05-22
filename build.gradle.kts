@@ -74,6 +74,7 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
 
 tasks.named<BootBuildImage>("bootBuildImage") {
