@@ -6,8 +6,8 @@ val keycloakVersion = "24.0.4"
 
 plugins {
     java
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version "3.2.6"
+    id("io.spring.dependency-management") version "1.1.5"
     id("org.sonarqube") version "5.0.0.4638"
     id("jacoco")
     id("idea")
