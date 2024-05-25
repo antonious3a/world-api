@@ -6,9 +6,9 @@ spring:
     name: world-api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: antonio3a
-    password: Antonio.3A
+    url: jdbc:mysql://${3A_MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${3A_MYSQL_USER}
+    password: ${3A_MYSQL_PASSWORD}
   jpa:
     generate-ddl: false
     show-sql: true
@@ -40,8 +40,8 @@ springdoc:
     displayRequestDuration: true
     oauth:
       realm:
-      client-id: antonio3a-world-api
-      client-secret: Xi1hFrWjokjqvFIv5qOiUg9wjrAfbiKQ
+      client-id: ${3A_WORLD_API_CLIENT_ID}
+      client-secret: ${3A_WORLD_API_CLIENT_SECRET}
       use-pkce-with-authorization-code-grant: true
 
 oauth-flow:
