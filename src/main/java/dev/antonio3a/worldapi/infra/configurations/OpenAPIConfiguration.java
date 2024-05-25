@@ -3,14 +3,27 @@ package dev.antonio3a.worldapi.infra.configurations;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.OAuthFlow;
+import io.swagger.v3.oas.models.security.OAuthFlows;
+import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenAPIConfiguration {
+
+    @Value("${oauth-flow.token-url}")
+    private String tokenUrl;
+
+    @Value("${oauth-flow.refresh-token-url}")
+    private String refreshTokenUrl;
+
+    @Value("${oauth-flow.authorization-url}")
+    private String authorizationUrl;
 
     @Bean
     public GroupedOpenApi groupedOpenApi() {
@@ -39,6 +52,26 @@ public class OpenAPIConfiguration {
                                 .description("JWT Authentication Bearer Token")
                                 .type(SecurityScheme.Type.HTTP)
                                 .in(SecurityScheme.In.HEADER)
+                        )
+                        .schemaRequirement("OAUTH2", new SecurityScheme()
+                                .name("Authorization")
+                                .scheme("oauth2")
+                                .bearerFormat("JWT")
+                                .description("OAuth2 Authentication Bearer Token")
+                                .in(SecurityScheme.In.HEADER)
+                                .type(SecurityScheme.Type.OAUTH2)
+                                .openIdConnectUrl("https://antonio3a.dev/auth/.well-known/openid-configuration")
+                                .flows(new OAuthFlows()
+                                        .authorizationCode(new OAuthFlow()
+                                                .tokenUrl(tokenUrl)
+                                                .refreshUrl(refreshTokenUrl)
+                                                .authorizationUrl(authorizationUrl)
+                                                .scopes(new Scopes()
+                                                        .addString("read", "Read Access")
+                                                        .addString("write", "Write Access")
+                                                )
+                                        )
+                                )
                         )
                         .addServersItem(new Server()
                                 .url("https://antonio3a.dev/world/api")

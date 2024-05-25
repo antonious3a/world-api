@@ -38,3 +38,13 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
     displayRequestDuration: true
+    oauth:
+      realm:
+      client-id: antonio3a-world-api
+      client-secret: Xi1hFrWjokjqvFIv5qOiUg9wjrAfbiKQ
+      use-pkce-with-authorization-code-grant: true
+
+oauth-flow:
+  token-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/token
+  refresh-token-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/token
+  authorization-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/auth
