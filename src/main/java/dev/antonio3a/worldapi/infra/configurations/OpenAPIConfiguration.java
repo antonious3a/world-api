@@ -32,7 +32,7 @@ public class OpenAPIConfiguration {
                                         .url("https://www.gnu.org/licenses/gpl-3.0.en.html")
                                 )
                         )
-                        .schemaRequirement("JWT Bearer", new SecurityScheme()
+                        .schemaRequirement("JWT", new SecurityScheme()
                                 .name("Authorization")
                                 .scheme("bearer")
                                 .bearerFormat("JWT")

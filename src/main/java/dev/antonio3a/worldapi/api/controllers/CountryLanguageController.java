@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/world/api/country-languages")
-@SecurityRequirement(name = "JWT Bearer")
+@SecurityRequirement(name = "JWT")
 public class CountryLanguageController {
 
     private final CountryLanguageService countryLanguageService;

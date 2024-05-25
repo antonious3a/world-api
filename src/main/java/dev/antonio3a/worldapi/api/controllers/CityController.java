@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/world/api/cities")
-@SecurityRequirement(name = "JWT Bearer")
+@SecurityRequirement(name = "JWT")
 public class CityController {
 
     private final CityService cityService;

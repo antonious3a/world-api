@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/world/api/countries")
-@SecurityRequirement(name = "JWT Bearer")
+@SecurityRequirement(name = "JWT")
 public class CountryController {
 
     private final CountryService countryService;
