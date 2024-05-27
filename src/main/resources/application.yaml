@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${3A_MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${3A_MYSQL_USER}
+    username: ${3A_MYSQL_USERNAME}
     password: ${3A_MYSQL_PASSWORD}
   jpa:
     generate-ddl: false
