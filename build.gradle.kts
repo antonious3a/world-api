@@ -1,5 +1,7 @@
+import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
 import org.springframework.boot.buildpack.platform.build.PullPolicy
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 val springdocOpenApiVersion = "2.5.0"
 val keycloakVersion = "24.0.4"
@@ -13,6 +15,7 @@ plugins {
     id("org.springframework.boot") version "3.2.6"
     id("io.spring.dependency-management") version "1.1.5"
     id("org.sonarqube") version "5.0.0.4638"
+    id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
     id("jacoco")
     id("idea")
 }
@@ -85,6 +88,47 @@ tasks.jacocoTestReport {
     reports {
         xml.required = true
     }
+}
+tasks.register<Test>("integrationTest") {
+    description = "Runs integration tests"
+    group = "verification"
+    //testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    //classpath = sourceSets["integrationTest"].runtimeClasspath
+    //shouldRunAfter("test")
+}
+
+/*sourceSets {
+    create("integrationTest") {
+        compileClasspath += sourceSets["main"].output + configurations["testRuntimeClasspath"]
+        runtimeClasspath += output + compileClasspath
+    }
+}*/
+
+tasks.register<BootRun>("preIntegrationTest") {
+    group = "verification"
+    description = "Starts the Spring Boot application before integration tests"
+    doFirst {
+        springBoot.mainClass.set("dev.antonio3a.worldapi.WorldApiApplication")
+    }
+}
+
+tasks.register<BootRun>("postIntegrationTest") {
+    group = "verification"
+    description = "Stops the Spring Boot application after integration tests"
+    doLast {
+        println("Spring Boot application stopped.")
+    }
+}
+
+tasks.named<OpenApiGeneratorTask>("generateOpenApiDocs") {
+    group = "documentation"
+    description = "Generates OpenAPI documentation"
+    dependsOn("integrationTest")
+}
+
+tasks.named("integrationTest") {
+    dependsOn("preIntegrationTest")
+    finalizedBy("postIntegrationTest", "generateOpenApiDocs")
 }
 
 configurations {
