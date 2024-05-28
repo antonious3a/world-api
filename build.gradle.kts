@@ -3,6 +3,10 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val springdocOpenApiVersion = "2.5.0"
 val keycloakVersion = "24.0.4"
+extra["springCloudVersion"] = "2023.0.1"
+
+group = "dev.antonio3a"
+version = "0.0.1-SNAPSHOT"
 
 plugins {
     java
@@ -20,6 +24,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
+    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
@@ -31,8 +36,11 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-group = "dev.antonio3a"
-version = "0.0.1-SNAPSHOT"
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+}
 
 idea {
     module {
@@ -47,11 +55,6 @@ java {
 
 jacoco {
     toolVersion = "0.8.11"
-}
-tasks.jacocoTestReport {
-    reports {
-        xml.required = true
-    }
 }
 
 sonar {
@@ -76,6 +79,12 @@ tasks.withType<Test> {
 tasks.named<BootBuildImage>("bootBuildImage") {
     imageName = "antonio3a/${project.name}:${project.version}"
     pullPolicy = PullPolicy.IF_NOT_PRESENT
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+    }
 }
 
 configurations {
