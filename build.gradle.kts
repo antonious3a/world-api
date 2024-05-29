@@ -1,4 +1,3 @@
-import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
 import org.springframework.boot.buildpack.platform.build.PullPolicy
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -89,46 +88,15 @@ tasks.jacocoTestReport {
         xml.required = true
     }
 }
-tasks.register<Test>("integrationTest") {
-    description = "Runs integration tests"
-    group = "verification"
-    //testClassesDirs = sourceSets["integrationTest"].output.classesDirs
-    //classpath = sourceSets["integrationTest"].runtimeClasspath
-    //shouldRunAfter("test")
+
+tasks.named("build") {
+    finalizedBy("generateOpenApiDocs")
 }
 
-/*sourceSets {
-    create("integrationTest") {
-        compileClasspath += sourceSets["main"].output + configurations["testRuntimeClasspath"]
-        runtimeClasspath += output + compileClasspath
+tasks {
+    forkedSpringBootRun {
+        doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
     }
-}*/
-
-tasks.register<BootRun>("preIntegrationTest") {
-    group = "verification"
-    description = "Starts the Spring Boot application before integration tests"
-    doFirst {
-        springBoot.mainClass.set("dev.antonio3a.worldapi.WorldApiApplication")
-    }
-}
-
-tasks.register<BootRun>("postIntegrationTest") {
-    group = "verification"
-    description = "Stops the Spring Boot application after integration tests"
-    doLast {
-        println("Spring Boot application stopped.")
-    }
-}
-
-tasks.named<OpenApiGeneratorTask>("generateOpenApiDocs") {
-    group = "documentation"
-    description = "Generates OpenAPI documentation"
-    dependsOn("integrationTest")
-}
-
-tasks.named("integrationTest") {
-    dependsOn("preIntegrationTest")
-    finalizedBy("postIntegrationTest", "generateOpenApiDocs")
 }
 
 configurations {
@@ -139,4 +107,16 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:9088/v3/api-docs")
+    outputDir.set(file("${layout.buildDirectory.get()}/docs"))
+    outputFileName.set("openapi.json")
+    /*waitTimeInSeconds.set(15)
+    groupedApiMappings.set(["https://localhost:8080/v3/api-docs/groupA" to "swagger-groupA.json",
+        "https://localhost:8080/v3/api-docs/groupB" to "swagger-groupB.json"])
+    customBootRun {
+        args.set(["--spring.profiles.active=special"])
+    }*/
 }
