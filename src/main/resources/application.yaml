@@ -4,11 +4,23 @@ server:
 spring:
   application:
     name: world-api
+  config:
+    import: optional:vault://
+  cloud:
+    vault:
+      enabled: true
+      uri: ${3A_VAULT_URI}
+      authentication: token
+      token: ${3A_VAULT_TOKEN}
+      kv:
+        enabled: true
+        backend: antonio3a
+        default-context: 3A
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${3A_MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${3A_MYSQL_USERNAME}
-    password: ${3A_MYSQL_PASSWORD}
+    url: jdbc:mysql://${MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
   jpa:
     generate-ddl: false
     show-sql: true
