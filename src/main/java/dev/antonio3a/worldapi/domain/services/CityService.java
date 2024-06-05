@@ -4,8 +4,7 @@ import dev.antonio3a.worldapi.domain.entities.City;
 import dev.antonio3a.worldapi.domain.repositories.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +17,7 @@ public class CityService {
         return cityRepository.findById(id).orElseThrow();
     }
 
-    public Page<City> getCities(Integer page, Integer size, String sortDirection, String... sortBy) {
-        return cityRepository.findAll(PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy));
+    public Page<City> getCities(Pageable pageable) {
+        return cityRepository.findAll(pageable);
     }
 }

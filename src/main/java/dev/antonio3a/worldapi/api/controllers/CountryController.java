@@ -5,8 +5,13 @@ import dev.antonio3a.worldapi.domain.services.CountryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,10 +30,7 @@ public class CountryController {
     }
 
     @GetMapping
-    public Page<Country> getCountries(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "10") int size,
-                                         @RequestParam(defaultValue = "ASC") String sortDirection,
-                                         @RequestParam(defaultValue = "code") String... sortBy) {
-        return countryService.getCountries(page, size, sortDirection, sortBy);
+    public Page<Country> getCountries(@ParameterObject Pageable pageable) {
+        return countryService.getCountries(pageable);
     }
 }

@@ -5,9 +5,14 @@ import dev.antonio3a.worldapi.domain.services.CityService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,10 +33,7 @@ public class CityController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<City> getCities(@RequestParam(defaultValue = "0") Integer page,
-                                @RequestParam(defaultValue = "10") Integer size,
-                                @RequestParam(defaultValue = "ASC") String sortDirection,
-                                @RequestParam(defaultValue = "id") String... sortBy) {
-        return cityService.getCities(page, size, sortDirection, sortBy);
+    public Page<City> getCities(@ParameterObject Pageable pageable) {
+        return cityService.getCities(pageable);
     }
 }
