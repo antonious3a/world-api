@@ -4,6 +4,9 @@ server:
     enabled: false
 
 spring:
+  graphql:
+    graphiql:
+      enabled: true
   application:
     name: world-api
   config:

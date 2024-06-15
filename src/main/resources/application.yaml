@@ -8,6 +8,10 @@ server:
     key-store-password: Antonio.3A
 
 spring:
+  graphql:
+
+    graphiql:
+      enabled: true
   application:
     name: world-api
   config:

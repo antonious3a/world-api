@@ -1,0 +1,53 @@
+type City {
+    id: ID!
+    name: String
+    country: Country
+    district: String
+    population: Int
+}
+
+type Country {
+    code: ID!
+    name: String
+    continent: String
+    region: String
+    surfaceArea: Float
+    independenceYear: Int
+    population: Int
+    lifeExpectancy: Float
+    gnp: Float
+    gnpOld: Float
+    localName: String
+    governmentForm: String
+    headOfState: String
+    capital: Int
+    code2: String!
+    cities: [City]
+    languages: [CountryLanguage]
+}
+
+type CountryLanguage {
+    id: CountryLanguageId!
+    country: Country
+    language: String
+    isOfficial: String
+    percentage: Float
+}
+
+type CountryLanguageId {
+    countryCode: String!
+    language: String!
+}
+
+type Query {
+    getCity(id: ID!): City
+    getCities: [City]
+    getCountry(code: ID!): Country
+    getCountries: [Country]
+    getCountryLanguage(countryCode: ID!): CountryLanguage
+    getCountryLanguages: [CountryLanguage]
+}
+
+schema {
+    query: Query
+}
