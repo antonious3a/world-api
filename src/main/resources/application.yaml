@@ -1,5 +1,11 @@
 server:
-  port: 9088
+  port: 443
+  ssl:
+    enabled: true
+    key-alias: world-api
+    key-store: keystore.p12
+    key-store-type: PKCS12
+    key-store-password: Antonio.3A
 
 spring:
   application:
@@ -8,19 +14,19 @@ spring:
     import: optional:vault://
   cloud:
     vault:
-      enabled: true
-      uri: ${3A_VAULT_URI}
+      enabled: false
+      uri: localhost:8200
       authentication: token
-      token: ${3A_VAULT_TOKEN}
+      token: fdbtdg5getg
       kv:
         enabled: true
         backend: antonio3a
         default-context: 3A
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://${3A_MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${3A_MYSQL_USERNAME}
+    password: ${3A_MYSQL_PASSWORD}
   jpa:
     generate-ddl: false
     show-sql: true
@@ -53,7 +59,6 @@ springdoc:
     oauth:
       realm:
       client-id: ${3A_WORLD_API_CLIENT_ID}
-      client-secret: ${3A_WORLD_API_CLIENT_SECRET}
       use-pkce-with-authorization-code-grant: true
 
 oauth-flow:
