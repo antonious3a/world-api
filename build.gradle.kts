@@ -1,6 +1,5 @@
 import org.springframework.boot.buildpack.platform.build.PullPolicy
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
-import org.springframework.boot.gradle.tasks.run.BootRun
 
 val springdocOpenApiVersion = "2.5.0"
 val keycloakVersion = "24.0.4"
@@ -113,10 +112,14 @@ openApi {
     apiDocsUrl.set("http://localhost:9088/v3/api-docs")
     outputDir.set(file("${layout.buildDirectory.get()}/docs"))
     outputFileName.set("openapi.json")
-    /*waitTimeInSeconds.set(15)
-    groupedApiMappings.set(["https://localhost:8080/v3/api-docs/groupA" to "swagger-groupA.json",
-        "https://localhost:8080/v3/api-docs/groupB" to "swagger-groupB.json"])
+    waitTimeInSeconds.set(30)
+    /*groupedApiMappings.set(
+        mapOf(
+            "https://localhost:8080/v3/api-docs/groupA" to "swagger-groupA.json",
+            "https://localhost:8080/v3/api-docs/groupB" to "swagger-groupB.json"
+        )
+    )*/
     customBootRun {
-        args.set(["--spring.profiles.active=special"])
-    }*/
+        args.add("--spring.profiles.active=3A")
+    }
 }
