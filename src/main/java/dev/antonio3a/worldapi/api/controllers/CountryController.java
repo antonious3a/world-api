@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,13 +26,14 @@ public class CountryController {
 
     private final CountryService countryService;
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public Country getCountryById(@PathVariable String id) {
         return countryService.getCountryById(id);
     }
 
-    @GetMapping
-    public Page<Country> getCountries(@ParameterObject Pageable pageable) {
+    @GetMapping(produces = "application/json")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Page<Country> getCountries(@ParameterObject @SortDefault(value = "code,asc") Pageable pageable) {
         return countryService.getCountries(pageable);
     }
 }

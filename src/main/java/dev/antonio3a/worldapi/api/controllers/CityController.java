@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,14 +27,14 @@ public class CityController {
     private final CityService cityService;
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public City getCityById(@PathVariable Integer id) {
         return cityService.getCityById(id);
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<City> getCities(@ParameterObject Pageable pageable) {
+    public Page<City> getCities(@ParameterObject @SortDefault(value = "name,asc") Pageable pageable) {
         return cityService.getCities(pageable);
     }
 }
