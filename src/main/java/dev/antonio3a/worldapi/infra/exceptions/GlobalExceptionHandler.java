@@ -31,8 +31,9 @@ public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler({
-            NoSuchElementException.class,
             NoHandlerFoundException.class,
+            NoResourceFoundException.class,
+            NoSuchElementException.class,
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(Exception ex, WebRequest request) {
@@ -47,7 +48,6 @@ public class GlobalExceptionHandler {
             IllegalArgumentException.class,
             IllegalStateException.class,
             MethodArgumentNotValidException.class,
-            NoResourceFoundException.class,
             PropertyReferenceException.class,
     })
     @ApiResponse(
