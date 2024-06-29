@@ -61,13 +61,8 @@ springdoc:
     displayRequestDuration: true
     oauth:
       realm: ${env.keycloak.realm.name}
-      client-id: ${env.keycloak.client.world-api.id}
+      client-id: ${env.oauth2.client-id}
       use-pkce-with-authorization-code-grant: true
-
-oauth-flow:
-  token-url: ${env.keycloak.protocol.uri}/token
-  refresh-token-url: ${env.keycloak.protocol.uri}/token
-  authorization-url: ${env.keycloak.protocol.uri}/auth
 
 env:
   main:
@@ -81,11 +76,12 @@ env:
     realm:
       name: ${3A_KEYCLOAK_REALM_NAME}
       uri: http://${env.keycloak.host}/realms/${env.keycloak.realm.name}
-    client:
-      world-api:
-        id: ${3A_KEYCLOAK_WORLD_API_CLIENT_ID}
   mysql:
     host: ${3A_MYSQL_HOST}
+  oauth2:
+    client-id: ${3A_KEYCLOAK_WORLD_API_CLIENT_ID}
+    authorization-url: ${env.keycloak.protocol.uri}/auth
+    token-url: ${env.keycloak.protocol.uri}/token
   vault:
     host: ${3A_VAULT_HOST}
     token: ${3A_VAULT_TOKEN}
