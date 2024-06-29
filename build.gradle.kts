@@ -2,15 +2,14 @@ import org.springframework.boot.buildpack.platform.build.PullPolicy
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val springdocOpenApiVersion = "2.5.0"
-val keycloakVersion = "24.0.4"
-extra["springCloudVersion"] = "2023.0.1"
+extra["springCloudVersion"] = "2023.0.2"
 
 group = "dev.antonio3a"
 version = "0.0.1-SNAPSHOT"
 
 plugins {
     java
-    id("org.springframework.boot") version "3.2.6"
+    id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.1.5"
     id("org.sonarqube") version "5.0.0.4638"
     id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
@@ -54,7 +53,9 @@ idea {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 jacoco {
