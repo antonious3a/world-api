@@ -18,18 +18,18 @@ spring:
   cloud:
     vault:
       enabled: false
-      uri: ${3A_3A_HOST}:8200
+      uri: ${env.vault.host}
       authentication: token
-      token: fdbtdg5getg
+      token: ${env.vault.token}
       kv:
         enabled: true
         backend: antonio3a
         default-context: 3A
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${3A_3A_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${3A_3A_USERNAME}
-    password: ${3A_3A_PASSWORD}
+    url: jdbc:mysql://${env.mysql.host}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${env.main.username}
+    password: ${env.main.password}
   jpa:
     generate-ddl: false
     show-sql: true
@@ -44,8 +44,8 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: ${keycloak.realm.uri}
-          jwk-set-uri: ${keycloak.realm.uri}/protocol/openid-connect/certs
+          issuer-uri: ${env.keycloak.realm.uri}
+          jwk-set-uri: ${env.keycloak.protocol.uri}/certs
 
 logging:
   level:
@@ -60,16 +60,34 @@ springdoc:
     operations-sorter: alpha
     displayRequestDuration: true
     oauth:
-      realm: ${keycloak.realm.name}
-      client-id: ${3A_WORLD_API_CLIENT_ID}
+      realm: ${env.keycloak.realm.name}
+      client-id: ${env.keycloak.client.world-api.id}
       use-pkce-with-authorization-code-grant: true
 
 oauth-flow:
-  token-url: ${keycloak.realm.uri}/protocol/openid-connect/token
-  refresh-token-url: ${keycloak.realm.uri}/protocol/openid-connect/token
-  authorization-url: ${keycloak.realm.uri}/protocol/openid-connect/auth
+  token-url: ${env.keycloak.protocol.uri}/token
+  refresh-token-url: ${env.keycloak.protocol.uri}/token
+  authorization-url: ${env.keycloak.protocol.uri}/auth
 
-keycloak:
-  realm:
-    name: antonio3a-realm
-    uri: http://${3A_3A_HOST}:9180/realms/${keycloak.realm.name}
+env:
+  main:
+    host: ${3A_3A_HOST}
+    username: ${3A_3A_USERNAME}
+    password: ${3A_3A_PASSWORD}
+  keycloak:
+    host: ${3A_KEYCLOAK_HOST}
+    protocol:
+      uri: ${env.keycloak.realm.uri}/protocol/openid-connect
+    realm:
+      name: ${3A_KEYCLOAK_REALM}
+      uri: http://${env.keycloak.host}/realms/${env.keycloak.realm.name}
+    client:
+      world-api:
+        id: ${3A_KEYCLOAK_WORLD_API_CLIENT_ID}
+  mysql:
+    host: ${3A_MYSQL_HOST}
+  vault:
+    host: ${3A_VAULT_HOST}
+    token: ${3A_VAULT_TOKEN}
+  zipkin:
+    host: ${3A_ZIPKIN_HOST}
