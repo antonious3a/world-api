@@ -9,7 +9,6 @@ server:
 
 spring:
   graphql:
-
     graphiql:
       enabled: true
   application:
@@ -19,7 +18,7 @@ spring:
   cloud:
     vault:
       enabled: false
-      uri: localhost:8200
+      uri: ${3A_3A_HOST}:8200
       authentication: token
       token: fdbtdg5getg
       kv:
@@ -28,9 +27,9 @@ spring:
         default-context: 3A
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${3A_MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${3A_MYSQL_USERNAME}
-    password: ${3A_MYSQL_PASSWORD}
+    url: jdbc:mysql://${3A_3A_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${3A_3A_USERNAME}
+    password: ${3A_3A_PASSWORD}
   jpa:
     generate-ddl: false
     show-sql: true
@@ -45,8 +44,8 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: http://localhost:9180/realms/antonio3a-realm
-          jwk-set-uri: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: ${keycloak.realm.uri}
+          jwk-set-uri: ${keycloak.realm.uri}/protocol/openid-connect/certs
 
 logging:
   level:
@@ -61,11 +60,16 @@ springdoc:
     operations-sorter: alpha
     displayRequestDuration: true
     oauth:
-      realm:
+      realm: ${keycloak.realm.name}
       client-id: ${3A_WORLD_API_CLIENT_ID}
       use-pkce-with-authorization-code-grant: true
 
 oauth-flow:
-  token-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/token
-  refresh-token-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/token
-  authorization-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/auth
+  token-url: ${keycloak.realm.uri}/protocol/openid-connect/token
+  refresh-token-url: ${keycloak.realm.uri}/protocol/openid-connect/token
+  authorization-url: ${keycloak.realm.uri}/protocol/openid-connect/auth
+
+keycloak:
+  realm:
+    name: antonio3a-realm
+    uri: http://${3A_3A_HOST}:9180/realms/${keycloak.realm.name}
