@@ -79,7 +79,7 @@ env:
     protocol:
       uri: ${env.keycloak.realm.uri}/protocol/openid-connect
     realm:
-      name: ${3A_KEYCLOAK_REALM}
+      name: ${3A_KEYCLOAK_REALM_NAME}
       uri: http://${env.keycloak.host}/realms/${env.keycloak.realm.name}
     client:
       world-api:
