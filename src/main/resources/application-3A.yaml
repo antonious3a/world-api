@@ -1,4 +1,4 @@
 server:
-  port: 9088
+  port: 8180
   ssl:
     enabled: false
