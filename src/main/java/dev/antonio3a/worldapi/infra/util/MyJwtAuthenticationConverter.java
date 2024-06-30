@@ -10,9 +10,10 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Component
@@ -33,17 +34,26 @@ public class MyJwtAuthenticationConverter implements Converter<Jwt, AbstractAuth
     }
 
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
-        String resourceId = jwt.getClaim("azp");
+        Map<String, Object> realmAccessMap = jwt.getClaimAsMap("realm_access");
         Map<String, Object> resourceAccessMap = jwt.getClaimAsMap("resource_access");
-        Map<String, Object> resource;
-        Collection<String> resourceRoles;
-        if(resourceAccessMap == null ||
-                (resource = (Map<String, Object>) resourceAccessMap.get(resourceId)) == null ||
-                (resourceRoles = (Collection<String>) resource.get("roles")) == null) {
-            return Set.of();
-        }
-        return resourceRoles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+
+        AtomicReference<Map<String, Collection<String>>> resource = new AtomicReference<>();
+        Collection<String> roles = new ArrayList<>();
+
+        realmAccessMap.forEach(
+                (key, value) -> roles.addAll((Collection<String>) value)
+        );
+        resourceAccessMap.forEach(
+                (key, value) -> {
+                    resource.set((Map<String, Collection<String>>) value);
+                    resource.get().forEach(
+                            (k, v) -> roles.addAll(v)
+                    );
+                }
+        );
+
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.toUpperCase()))
                 .toList();
     }
 
