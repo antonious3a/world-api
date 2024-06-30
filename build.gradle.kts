@@ -18,6 +18,9 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -29,14 +32,12 @@ dependencies {
     implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
-    compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    annotationProcessor("org.projectlombok:lombok")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.graphql:spring-graphql-test")
     testImplementation("org.springframework:spring-webflux")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 dependencyManagement {
