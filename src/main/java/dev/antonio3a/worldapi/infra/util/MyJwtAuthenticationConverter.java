@@ -53,7 +53,7 @@ public class MyJwtAuthenticationConverter implements Converter<Jwt, AbstractAuth
         );
 
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.toUpperCase()))
+                .map(role -> new SimpleGrantedAuthority(role.replace('-', '_').toUpperCase()))
                 .toList();
     }
 

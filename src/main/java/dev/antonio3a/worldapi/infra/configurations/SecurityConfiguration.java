@@ -34,8 +34,7 @@ public class SecurityConfiguration {
                         )
                 ).authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests.requestMatchers("/world/api/**").authenticated()
-                ).authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().permitAll()
+                                .anyRequest().permitAll()
                 ).oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(jwtConfigurer ->
                                 jwtConfigurer.jwtAuthenticationConverter(myJwtAuthenticationConverter)
