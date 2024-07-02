@@ -9,7 +9,6 @@ server:
 
 spring:
   graphql:
-
     graphiql:
       enabled: true
   application:
@@ -18,19 +17,17 @@ spring:
     import: optional:vault://
   cloud:
     vault:
-      enabled: false
-      uri: localhost:8200
+      uri: ${env.vault.host}
       authentication: token
-      token: fdbtdg5getg
+      token: ${env.vault.token}
       kv:
-        enabled: true
-        backend: antonio3a
-        default-context: 3A
+        backend: secrets
+        default-context: application
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${3A_MYSQL_HOST}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${3A_MYSQL_USERNAME}
-    password: ${3A_MYSQL_PASSWORD}
+    url: jdbc:mysql://${env.mysql.host}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${env.mysql.username}
+    password: ${env.mysql.password}
   jpa:
     generate-ddl: false
     show-sql: true
@@ -45,8 +42,8 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: http://localhost:9180/realms/antonio3a-realm
-          jwk-set-uri: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: ${env.keycloak.realm.uri}
+          jwk-set-uri: ${env.keycloak.protocol.uri}/certs
 
 logging:
   level:
@@ -70,7 +67,6 @@ management:
       exposure:
         include: "*"
     enabled-by-default: true
-
   endpoint:
     health:
       show-details: always
@@ -79,7 +75,7 @@ management:
       probability: 1.0
   zipkin:
     tracing:
-      endpoint: http://${CPDI_HOST}:9411/api/v2/spans
+      endpoint: http://${env.zipkin.host}/api/v2/spans
 
 springdoc:
   swagger-ui:
@@ -88,11 +84,34 @@ springdoc:
     operations-sorter: alpha
     displayRequestDuration: true
     oauth:
-      realm:
-      client-id: ${3A_WORLD_API_CLIENT_ID}
+      realm: ${env.keycloak.realm.name}
+      client-id: ${env.oauth2.client-id}
       use-pkce-with-authorization-code-grant: true
 
-oauth-flow:
-  token-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/token
-  refresh-token-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/token
-  authorization-url: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/auth
+env:
+  keycloak:
+    host: ${KEYCLOAK_HOST}
+    protocol:
+      uri: ${env.keycloak.realm.uri}/protocol/openid-connect
+    realm:
+      name: ${KEYCLOAK_REALM_NAME}
+      uri: http://${env.keycloak.host}/realms/${env.keycloak.realm.name}
+  mysql:
+    host: ${MYSQL_HOST}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  oauth2:
+    client-id: ${KEYCLOAK_WORLD_API_CLIENT_ID}
+    authorization-url: ${env.keycloak.protocol.uri}/auth
+    token-url: ${env.keycloak.protocol.uri}/token
+  vault:
+    host: ${3A_VAULT_HOST}
+    token: ${3A_VAULT_TOKEN}
+  zipkin:
+    host: ${ZIPKIN_HOST}
+
+info:
+  app:
+    ame: ${spring.application.name}
+    version: 0.0.1
+    description: ${spring.application.name} application

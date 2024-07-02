@@ -32,7 +32,7 @@ public class CountryController {
     }
 
     @GetMapping(produces = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Country> getCountries(@ParameterObject @SortDefault(value = "code,asc") Pageable pageable) {
         return countryService.getCountries(pageable);
     }

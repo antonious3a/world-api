@@ -26,14 +26,14 @@ public class CityController {
 
     private final CityService cityService;
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping(value = "/{id}", produces = "application/json")
     public City getCityById(@PathVariable Integer id) {
         return cityService.getCityById(id);
     }
 
     @GetMapping(produces = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<City> getCities(@ParameterObject @SortDefault(value = "name,asc") Pageable pageable) {
         return cityService.getCities(pageable);
     }

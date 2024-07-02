@@ -16,13 +16,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenAPIConfiguration {
 
-    @Value("${oauth-flow.token-url}")
+    @Value("${env.oauth2.token-url}")
     private String tokenUrl;
 
-    @Value("${oauth-flow.refresh-token-url}")
-    private String refreshTokenUrl;
-
-    @Value("${oauth-flow.authorization-url}")
+    @Value("${env.oauth2.authorization-url}")
     private String authorizationUrl;
 
     @Bean
@@ -57,10 +54,12 @@ public class OpenAPIConfiguration {
                                 .flows(new OAuthFlows()
                                         .authorizationCode(new OAuthFlow()
                                                 .tokenUrl(tokenUrl)
-                                                .refreshUrl(refreshTokenUrl)
+                                                .refreshUrl(tokenUrl)
                                                 .authorizationUrl(authorizationUrl)
                                                 .scopes(new Scopes()
-                                                        .addString("oidc", "OIDC")
+                                                        .addString("openid", "OpenID")
+                                                        .addString("profile", "Profile")
+                                                        .addString("email", "E-mail")
                                                 )
                                         )
                                 )

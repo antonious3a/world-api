@@ -33,20 +33,14 @@ public class SecurityConfiguration {
                                         response.sendError(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage())
                         )
                 ).authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/world/api/**")
-                                .authenticated()
-                ).authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .anyRequest()
-                                .permitAll()
+                        authorizeRequests.requestMatchers("/world/api/**").authenticated()
+                                .anyRequest().permitAll()
                 ).oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(jwtConfigurer ->
                                 jwtConfigurer.jwtAuthenticationConverter(myJwtAuthenticationConverter)
                         )
                 ).sessionManagement(sessionManagement ->
-                        sessionManagement
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ).build();
     }
 }

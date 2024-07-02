@@ -34,7 +34,7 @@ public class CountryLanguageController {
     }
 
     @GetMapping(produces = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<CountryLanguage> getCountryLanguages(@ParameterObject @SortDefault(value = "countryCode,asc") Pageable pageable) {
         return countryLanguageService.getCountryLanguages(pageable);
     }
