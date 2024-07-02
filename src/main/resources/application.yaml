@@ -12,22 +12,22 @@ spring:
     graphiql:
       enabled: true
   application:
-    name: world-api
+    name: antonio3a-world-api
   config:
     import: optional:vault://
   cloud:
     vault:
-      uri: ${env.vault.host}
+      uri:  ${AAA_VAULT_URI}
       authentication: token
-      token: ${env.vault.token}
+      token: ${AAA_VAULT_TOKEN}
       kv:
-        backend: secrets
-        default-context: application
+        backend: key-value
+        default-context: applications
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${env.mysql.host}/world?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${env.mysql.username}
-    password: ${env.mysql.password}
+    url: jdbc:mysql://${MYSQL_HOST}/world?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
   jpa:
     generate-ddl: false
     show-sql: true
@@ -73,9 +73,6 @@ management:
   tracing:
     sampling:
       probability: 1.0
-  zipkin:
-    tracing:
-      endpoint: http://${env.zipkin.host}/api/v2/spans
 
 springdoc:
   swagger-ui:
@@ -90,25 +87,16 @@ springdoc:
 
 env:
   keycloak:
-    host: ${KEYCLOAK_HOST}
+    uri: ${KEYCLOAK_URI}
     protocol:
       uri: ${env.keycloak.realm.uri}/protocol/openid-connect
     realm:
       name: ${KEYCLOAK_REALM_NAME}
-      uri: http://${env.keycloak.host}/realms/${env.keycloak.realm.name}
-  mysql:
-    host: ${MYSQL_HOST}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+      uri: ${env.keycloak.uri}/realms/${env.keycloak.realm.name}
   oauth2:
     client-id: ${KEYCLOAK_WORLD_API_CLIENT_ID}
     authorization-url: ${env.keycloak.protocol.uri}/auth
     token-url: ${env.keycloak.protocol.uri}/token
-  vault:
-    host: ${3A_VAULT_HOST}
-    token: ${3A_VAULT_TOKEN}
-  zipkin:
-    host: ${ZIPKIN_HOST}
 
 info:
   app:
