@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Component
@@ -37,19 +36,15 @@ public class MyJwtAuthenticationConverter implements Converter<Jwt, AbstractAuth
         Map<String, Object> realmAccessMap = jwt.getClaimAsMap("realm_access");
         Map<String, Object> resourceAccessMap = jwt.getClaimAsMap("resource_access");
 
-        AtomicReference<Map<String, Collection<String>>> resource = new AtomicReference<>();
         Collection<String> roles = new ArrayList<>();
 
-        realmAccessMap.forEach(
-                (key, value) -> roles.addAll((Collection<String>) value)
+        realmAccessMap.values().forEach(
+                value -> roles.addAll((Collection<String>) value)
         );
-        resourceAccessMap.forEach(
-                (key, value) -> {
-                    resource.set((Map<String, Collection<String>>) value);
-                    resource.get().forEach(
-                            (k, v) -> roles.addAll(v)
-                    );
-                }
+        resourceAccessMap.values().forEach(
+                value -> ((Map<String, Collection<String>>) value).values().forEach(
+                        roles::addAll
+                )
         );
 
         return roles.stream()
@@ -58,7 +53,7 @@ public class MyJwtAuthenticationConverter implements Converter<Jwt, AbstractAuth
     }
 
     private String getPrincipalNAme(Jwt jwt) {
-        if(!jwt.hasClaim(PRINCIPAL_CLAIM)) {
+        if (!jwt.hasClaim(PRINCIPAL_CLAIM)) {
             return jwt.getSubject();
         }
         return jwt.getClaim(PRINCIPAL_CLAIM);
