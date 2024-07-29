@@ -1,11 +1,9 @@
 server:
-  port: 443
+  port: 2443
   ssl:
     enabled: true
-    key-alias: world-api
-    key-store: keystore.p12
-    key-store-type: PKCS12
-    key-store-password: Antonio.3A
+    certificate: antonio3a.aaa.crt
+    certificate-private-key: antonio3a.aaa.key
 
 spring:
   graphql:
@@ -25,7 +23,7 @@ spring:
         default-context: applications
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}/world?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${MYSQL_URI}/world?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
   jpa:
