@@ -1,5 +1,6 @@
 import org.springframework.boot.buildpack.platform.build.PullPolicy
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 val springdocOpenApiVersion = "2.5.0"
 extra["springCloudVersion"] = "2023.0.2"
@@ -29,11 +30,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
     implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
-    implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
     runtimeOnly("com.mysql:mysql-connector-j")
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.graphql:spring-graphql-test")
     testImplementation("org.springframework:spring-webflux")
@@ -97,15 +96,20 @@ tasks.named("build") {
     finalizedBy("generateOpenApiDocs")
 }
 
+tasks.register<JavaExec>("run") {
+    jvmArgs( "-javaagent:" + classpath.asPath + "/libs/opentelemetry-javaagent-all-5.jar",
+        "-Dotel.trace.exporter=jaeger",
+        "-Dotel.exporter.otlp.endpoint=opentelemetry-collector.devops.cpdi:4317",
+        "-Dotel.service.name=${project.name}",
+        "-Dotel.resource.attributes=service.name=${project.name}",
+        "-Dotel.logs.exporter=otlp",
+        "-Dserver.port=9055",
+    )
+}
+
 tasks {
     forkedSpringBootRun {
         doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
-    }
-}
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
     }
 }
 
