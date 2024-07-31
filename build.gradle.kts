@@ -96,17 +96,6 @@ tasks.named("build") {
     finalizedBy("generateOpenApiDocs")
 }
 
-tasks.register<JavaExec>("run") {
-    jvmArgs( "-javaagent:" + classpath.asPath + "/libs/opentelemetry-javaagent-all-5.jar",
-        "-Dotel.trace.exporter=jaeger",
-        "-Dotel.exporter.otlp.endpoint=opentelemetry-collector.devops.cpdi:4317",
-        "-Dotel.service.name=${project.name}",
-        "-Dotel.resource.attributes=service.name=${project.name}",
-        "-Dotel.logs.exporter=otlp",
-        "-Dserver.port=9055",
-    )
-}
-
 tasks {
     forkedSpringBootRun {
         doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
