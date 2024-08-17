@@ -5,16 +5,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "country", schema = "world")
-public class Country {
+public class Country extends RepresentationModel<Country> {
 
     @Id
     @Size(max = 3)
@@ -86,9 +89,22 @@ public class Country {
     @Column(name = "Code2", nullable = false, length = 2, columnDefinition = "char(2)")
     private String code2;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private Set<City> cities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private Set<CountryLanguage> languages = new LinkedHashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Country country = (Country) o;
+        return getCode() != null && Objects.equals(getCode(), country.getCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
