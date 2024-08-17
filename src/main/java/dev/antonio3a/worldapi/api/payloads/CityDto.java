@@ -31,4 +31,6 @@ public class CityDto extends RepresentationModel<CityDto> implements Serializabl
     private String district;
     @NotNull
     private Integer population;
+    @NotNull
+    private String countryCode;
 }

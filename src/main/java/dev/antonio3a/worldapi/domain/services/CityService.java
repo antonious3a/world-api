@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,15 @@ public class CityService {
 
     public CityDto getCityById(Integer id) {
         return modelMapper.map(cityRepository.findById(id).orElseThrow(), CityDto.class)
-                .add(linkTo(methodOn(CityController.class).getCityById(id)).withSelfRel());
+                .add(linkTo(methodOn(CityController.class).getCityById(id)).withSelfRel())
+                .add(linkTo(methodOn(CityController.class).getCities(Pageable.unpaged(), null)).withRel(IanaLinkRelations.COLLECTION));
     }
 
     public PagedModel<CityDto> getCities(Pageable pageable, PagedResourcesAssembler assembler) {
-        return assembler.toModel(cityRepository.findAll(pageable).map(city -> modelMapper.map(city, CityDto.class)));
+        return assembler.toModel(cityRepository.findAll(pageable)
+                .map(city -> modelMapper.map(city, CityDto.class)
+                        .add(linkTo(methodOn(CityController.class).getCities(pageable, assembler)).withSelfRel().withType("GET"))
+                )
+        );
     }
 }
