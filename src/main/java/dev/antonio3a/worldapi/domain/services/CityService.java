@@ -1,11 +1,13 @@
 package dev.antonio3a.worldapi.domain.services;
 
 import dev.antonio3a.worldapi.api.controllers.CityController;
-import dev.antonio3a.worldapi.domain.entities.City;
+import dev.antonio3a.worldapi.api.payloads.CityDto;
 import dev.antonio3a.worldapi.domain.repositories.CityRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -16,13 +18,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CityService {
 
     private final CityRepository cityRepository;
+    private final ModelMapper modelMapper;
 
-    public City getCityById(Integer id) {
-        return cityRepository.findById(id).orElseThrow()
+    public CityDto getCityById(Integer id) {
+        return modelMapper.map(cityRepository.findById(id).orElseThrow(), CityDto.class)
                 .add(linkTo(methodOn(CityController.class).getCityById(id)).withSelfRel());
     }
 
-    public Page<City> getCities(Pageable pageable) {
-        return cityRepository.findAll(pageable);
+    public PagedModel<CityDto> getCities(Pageable pageable, PagedResourcesAssembler assembler) {
+        return assembler.toModel(cityRepository.findAll(pageable).map(city -> modelMapper.map(city, CityDto.class)));
     }
 }
