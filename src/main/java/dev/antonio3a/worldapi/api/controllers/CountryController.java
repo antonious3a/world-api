@@ -7,9 +7,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,8 @@ public class CountryController {
     }
 
     @GetMapping(produces = "application/json")
-    public Page<CountryDto> getCountries(@ParameterObject @SortDefault(value = "code,asc") Pageable pageable) {
-        return countryService.getCountries(pageable);
+    public PagedModel<CountryDto> getCountries(@ParameterObject @SortDefault(value = "code,asc") Pageable pageable,
+                                               PagedResourcesAssembler assembler) {
+        return countryService.getCountries(pageable, assembler);
     }
 }

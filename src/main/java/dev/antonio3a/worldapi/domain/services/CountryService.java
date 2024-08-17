@@ -5,8 +5,9 @@ import dev.antonio3a.worldapi.api.payloads.CountryDto;
 import dev.antonio3a.worldapi.domain.repositories.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -25,7 +26,8 @@ public class CountryService {
                 .add(linkTo(methodOn(CountryController.class).getCountryByCode(code)).withSelfRel());
     }
 
-    public Page<CountryDto> getCountries(Pageable pageable) {
-        return countryRepository.findAll(pageable).map(country -> modelMapper.map(country, CountryDto.class));
+    public PagedModel<CountryDto> getCountries(Pageable pageable,
+                                               PagedResourcesAssembler assembler) {
+        return assembler.toModel(countryRepository.findAll(pageable).map(country -> modelMapper.map(country, CountryDto.class)));
     }
 }
