@@ -4,6 +4,7 @@ import dev.antonio3a.worldapi.domain.entities.Country;
 import dev.antonio3a.worldapi.domain.services.CountryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -25,9 +26,9 @@ public class CountryController {
 
     private final CountryService countryService;
 
-    @GetMapping(value = "/{id}", produces = "application/json")
-    public Country getCountryById(@PathVariable String id) {
-        return countryService.getCountryById(id);
+    @GetMapping(value = "/{code}", produces = "application/json")
+    public Country getCountryByCode(@PathVariable @Pattern(regexp = "[A-Z]{3}") String code) {
+        return countryService.getCountryByCode(code);
     }
 
     @GetMapping(produces = "application/json")

@@ -15,6 +15,6 @@ public class WorldController {
 
     @QueryMapping
     public Country getCountry(@Argument String code) {
-        return countryService.getCountryById(code);
+        return countryService.getCountryByCode(code);
     }
 }
