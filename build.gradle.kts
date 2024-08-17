@@ -2,6 +2,9 @@ import org.springframework.boot.buildpack.platform.build.PullPolicy
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val springdocOpenApiVersion = "2.5.0"
+val modelMapperVersion = "3.2.0"
+val modelMapperModuleRecordVersion = "1.0.0"
+
 extra["springCloudVersion"] = "2023.0.2"
 
 group = "dev.antonio3a"
@@ -18,9 +21,8 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor("org.projectlombok:lombok")
-    compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.modelmapper:modelmapper:$modelMapperVersion")
+    implementation("org.modelmapper:modelmapper-module-record:$modelMapperModuleRecordVersion")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
@@ -32,6 +34,9 @@ dependencies {
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
+    annotationProcessor("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.graphql:spring-graphql-test")
