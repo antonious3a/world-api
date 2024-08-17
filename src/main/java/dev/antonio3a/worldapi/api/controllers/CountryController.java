@@ -1,6 +1,6 @@
 package dev.antonio3a.worldapi.api.controllers;
 
-import dev.antonio3a.worldapi.domain.entities.Country;
+import dev.antonio3a.worldapi.api.payloads.CountryDto;
 import dev.antonio3a.worldapi.domain.services.CountryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -27,12 +27,12 @@ public class CountryController {
     private final CountryService countryService;
 
     @GetMapping(value = "/{code}", produces = "application/json")
-    public Country getCountryByCode(@PathVariable @Pattern(regexp = "[A-Z]{3}") String code) {
+    public CountryDto getCountryByCode(@PathVariable @Pattern(regexp = "[A-Z]{3}") String code) {
         return countryService.getCountryByCode(code);
     }
 
     @GetMapping(produces = "application/json")
-    public Page<Country> getCountries(@ParameterObject @SortDefault(value = "code,asc") Pageable pageable) {
+    public Page<CountryDto> getCountries(@ParameterObject @SortDefault(value = "code,asc") Pageable pageable) {
         return countryService.getCountries(pageable);
     }
 }

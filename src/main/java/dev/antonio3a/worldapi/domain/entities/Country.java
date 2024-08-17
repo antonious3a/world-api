@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "country", schema = "world")
-public class Country extends RepresentationModel<Country> {
+public class Country {
 
     @Id
     @Size(max = 3)
