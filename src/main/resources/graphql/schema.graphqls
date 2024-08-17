@@ -44,8 +44,7 @@ type Query {
     getCities: [City]
     getCountry(code: ID!): Country
     getCountries: [Country]
-    getCountryLanguage(countryCode: ID!): CountryLanguage
-    getCountryLanguages: [CountryLanguage]
+    getCountryLanguages(countryCode: ID!): [CountryLanguage]
 }
 
 schema {
