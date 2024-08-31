@@ -4,6 +4,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 val springdocOpenApiVersion = "2.5.0"
 val modelMapperVersion = "3.2.0"
 val modelMapperModuleRecordVersion = "1.0.0"
+val keycloakVersion = "25.0.4"
 
 extra["springCloudVersion"] = "2023.0.2"
 
@@ -12,7 +13,7 @@ version = "0.0.1-SNAPSHOT"
 
 plugins {
     java
-    id("org.springframework.boot") version "3.3.2"
+    id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.sonarqube") version "5.0.0.4638"
     id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
@@ -21,6 +22,7 @@ plugins {
 }
 
 dependencies {
+    implementation("org.keycloak:keycloak-policy-enforcer:$keycloakVersion")
     implementation("org.modelmapper:modelmapper:$modelMapperVersion")
     implementation("org.modelmapper:modelmapper-module-record:$modelMapperModuleRecordVersion")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -29,7 +31,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
