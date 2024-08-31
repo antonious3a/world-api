@@ -97,6 +97,11 @@ springdoc:
 
 env:
   keycloak:
+    policy-enforcer:
+      realm: ${KEYCLOAK_REALM_NAME}
+      auth-server-url: ${KEYCLOAK_URI}
+      resource: ${CLIENT_ID}
+      credentials.secret: ${CLIENT_SECRET}
     uri: ${KEYCLOAK_URI}
     protocol:
       openid-connect: ${env.keycloak.realm.uri}/protocol/openid-connect
