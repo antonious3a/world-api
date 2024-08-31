@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/world/api/countries")
+@RequestMapping("/countries")
 @SecurityRequirements(value = {
         @SecurityRequirement(name = "JWT"),
         @SecurityRequirement(name = "OAUTH2")

@@ -70,7 +70,7 @@ public class OpenAPIConfiguration {
                         )
                 )
                 .group("public")
-                .pathsToMatch("/world/api/**")
+                .pathsToMatch("/**")
                 .build();
     }
 }

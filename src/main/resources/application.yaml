@@ -4,6 +4,11 @@ server:
     enabled: true
     certificate: antonio3a.aaa.crt
     certificate-private-key: antonio3a.aaa.key
+  servlet:
+    context-path: /world/api/v1
+  error:
+    whitelabel:
+      enabled: false
 
 spring:
   graphql:
@@ -41,7 +46,10 @@ spring:
       resource-server:
         jwt:
           issuer-uri: ${env.keycloak.realm.uri}
-          jwk-set-uri: ${env.keycloak.protocol.uri}/certs
+          jwk-set-uri: ${env.keycloak.protocol.openid-connect}/certs
+  web:
+    resources:
+      add-mappings: false
 
 logging:
   level:
@@ -80,21 +88,24 @@ springdoc:
     displayRequestDuration: true
     oauth:
       realm: ${env.keycloak.realm.name}
-      client-id: ${env.oauth2.client-id}
+      client-id: ${CLIENT_ID}
+      client-secret: ${CLIENT_SECRET}
       use-pkce-with-authorization-code-grant: true
+    path: /docs/
+  api-docs:
+    path: /docs/oas/v3
 
 env:
   keycloak:
     uri: ${KEYCLOAK_URI}
     protocol:
-      uri: ${env.keycloak.realm.uri}/protocol/openid-connect
+      openid-connect: ${env.keycloak.realm.uri}/protocol/openid-connect
     realm:
       name: ${KEYCLOAK_REALM_NAME}
       uri: ${env.keycloak.uri}/realms/${env.keycloak.realm.name}
   oauth2:
-    client-id: ${KEYCLOAK_WORLD_API_CLIENT_ID}
-    authorization-url: ${env.keycloak.protocol.uri}/auth
-    token-url: ${env.keycloak.protocol.uri}/token
+    authorization-url: ${env.keycloak.protocol.openid-connect}/auth
+    token-url: ${env.keycloak.protocol.openid-connect}/token
 
 info:
   app:

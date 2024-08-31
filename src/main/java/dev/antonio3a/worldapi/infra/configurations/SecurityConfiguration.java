@@ -33,8 +33,9 @@ public class SecurityConfiguration {
                                         response.sendError(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage())
                         )
                 ).authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests.requestMatchers("/world/api/**").authenticated()
-                                .anyRequest().permitAll()
+                        authorizeRequests
+                                .requestMatchers("/docs/**", "/actuator/**", "/").permitAll()
+                                .anyRequest().authenticated()
                 ).oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(jwtConfigurer ->
                                 jwtConfigurer.jwtAuthenticationConverter(myJwtAuthenticationConverter)
