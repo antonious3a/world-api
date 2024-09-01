@@ -103,7 +103,13 @@ env:
       auth-server-url: ${KEYCLOAK_URI}
       resource: ${CLIENT_ID}
       credentials.secret: ${CLIENT_SECRET}
-      public-paths: /world/api/v1/docs, /world/api/v1/actuator
+      paths:
+        - path: /docs/*
+          enforcement-mode: disabled
+        - path: /actuator/*
+          enforcement-mode: disabled
+        - path: /
+          enforcement-mode: disabled
 
     uri: ${KEYCLOAK_URI}
     protocol:

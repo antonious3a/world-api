@@ -1,10 +1,9 @@
 package dev.antonio3a.worldapi.infra.configurations;
 
 import dev.antonio3a.worldapi.infra.util.MyJwtAuthenticationConverter;
-import dev.antonio3a.worldapi.infra.util.MyServletPolicyEnforcerFilter;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.adapters.authorization.integration.jakarta.ServletPolicyEnforcerFilter;
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +23,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     private final MyJwtAuthenticationConverter myJwtAuthenticationConverter;
-
-    @Value("${env.keycloak.policy-enforcer.public-paths}")
-    private String publicPaths;
 
     @Bean
     @ConfigurationProperties(prefix = "env.keycloak.policy-enforcer")
@@ -56,7 +52,7 @@ public class SecurityConfiguration {
                         )
                 ).sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ).addFilterAfter(new MyServletPolicyEnforcerFilter(httpRequest -> policyEnforcerConfig(), publicPaths), BearerTokenAuthenticationFilter.class)
+                ).addFilterAfter(new ServletPolicyEnforcerFilter(httpRequest -> policyEnforcerConfig()), BearerTokenAuthenticationFilter.class)
                 .build();
     }
 }
