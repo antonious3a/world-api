@@ -1,8 +1,8 @@
 package dev.antonio3a.worldapi.infra.configurations;
 
 import dev.antonio3a.worldapi.infra.util.MyJwtAuthenticationConverter;
+import dev.antonio3a.worldapi.infra.util.MyServletPolicyEnforcerFilter;
 import lombok.RequiredArgsConstructor;
-import org.keycloak.adapters.authorization.integration.jakarta.ServletPolicyEnforcerFilter;
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -52,7 +52,7 @@ public class SecurityConfiguration {
                         )
                 ).sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )//.addFilterAfter(new ServletPolicyEnforcerFilter(httpRequest -> policyEnforcerConfig()), BearerTokenAuthenticationFilter.class)
+                ).addFilterAfter(new MyServletPolicyEnforcerFilter(httpRequest -> policyEnforcerConfig()), BearerTokenAuthenticationFilter.class)
                 .build();
     }
 }

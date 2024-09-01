@@ -20,7 +20,7 @@ spring:
     import: optional:vault://
   cloud:
     vault:
-      uri:  ${AAA_VAULT_URI}
+      uri: ${AAA_VAULT_URI}
       authentication: token
       token: ${AAA_VAULT_TOKEN}
       kv:
@@ -54,6 +54,7 @@ spring:
 logging:
   level:
     org:
+      keycloak.adapters.authorization.PolicyEnforcer: debug
       hibernate:
         sql: debug
 
@@ -102,6 +103,7 @@ env:
       auth-server-url: ${KEYCLOAK_URI}
       resource: ${CLIENT_ID}
       credentials.secret: ${CLIENT_SECRET}
+
     uri: ${KEYCLOAK_URI}
     protocol:
       openid-connect: ${env.keycloak.realm.uri}/protocol/openid-connect
