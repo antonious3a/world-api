@@ -10,10 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,5 +32,10 @@ public class CityController {
     public PagedModel<CityDto> getCities(@ParameterObject @SortDefault(value = "name,asc") Pageable pageable,
                                          PagedResourcesAssembler assembler) {
         return cityService.getCities(pageable, assembler);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public void deleteCity(@PathVariable Long id) {
+
     }
 }

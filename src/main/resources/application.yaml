@@ -103,6 +103,7 @@ env:
       auth-server-url: ${KEYCLOAK_URI}
       resource: ${CLIENT_ID}
       credentials.secret: ${CLIENT_SECRET}
+      http-method-as-scope: true
       paths:
         - path: /docs/*
           enforcement-mode: disabled
