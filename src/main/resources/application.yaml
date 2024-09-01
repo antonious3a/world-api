@@ -103,6 +103,7 @@ env:
       auth-server-url: ${KEYCLOAK_URI}
       resource: ${CLIENT_ID}
       credentials.secret: ${CLIENT_SECRET}
+      public-paths: /world/api/v1/docs, /world/api/v1/actuator
 
     uri: ${KEYCLOAK_URI}
     protocol:

@@ -14,18 +14,20 @@ import java.util.Set;
 
 public class MyServletPolicyEnforcerFilter extends ServletPolicyEnforcerFilter {
 
-    private static final Set<String> publicPaths = Set.of("/world/api/v1/docs", "/world/api/v1/actuator");
+    private final String publicPaths;
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public MyServletPolicyEnforcerFilter(ConfigurationResolver configResolver) {
+    public MyServletPolicyEnforcerFilter(ConfigurationResolver configResolver, String publicPaths) {
         super(configResolver);
+        this.publicPaths = publicPaths;
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        for (String publicPath : publicPaths) {
+        Set<String> publicPathsSet = Set.of(publicPaths.split(","));
+        for (String publicPath : publicPathsSet) {
             if (request.getRequestURI().startsWith(publicPath)) {
                 logger.infof("Public path [%s], request authorized, continuing the filter chain", request.getRequestURI());
                 filterChain.doFilter(servletRequest, servletResponse);
