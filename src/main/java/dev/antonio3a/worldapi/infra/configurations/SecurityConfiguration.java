@@ -42,17 +42,21 @@ public class SecurityConfiguration {
                                 (request, response, accessDeniedException) ->
                                         response.sendError(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage())
                         )
-                ).authorizeHttpRequests(authorizeRequests ->
+                )
+                .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/world/api/v1/docs/**", "/actuator/**", "/").permitAll()
                                 .anyRequest().authenticated()
-                ).oauth2ResourceServer(oauth2ResourceServer ->
+                )
+                .oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(jwtConfigurer ->
                                 jwtConfigurer.jwtAuthenticationConverter(myJwtAuthenticationConverter)
                         )
-                ).sessionManagement(sessionManagement ->
+                )
+                .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ).addFilterAfter(new ServletPolicyEnforcerFilter(httpRequest -> policyEnforcerConfig()), BearerTokenAuthenticationFilter.class)
+                )
+                .addFilterAfter(new ServletPolicyEnforcerFilter(httpRequest -> policyEnforcerConfig()), BearerTokenAuthenticationFilter.class)
                 .build();
     }
 }
