@@ -36,6 +36,7 @@ dependencies {
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
