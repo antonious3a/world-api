@@ -1,11 +1,9 @@
 server:
-  port: 2443
+  port: 8280
   ssl:
-    enabled: true
+    enabled: false
     certificate: antonio3a.aaa.crt
     certificate-private-key: antonio3a.aaa.key
-  servlet:
-    context-path: /world/api/v1
   error:
     whitelabel:
       enabled: false
@@ -92,9 +90,9 @@ springdoc:
       client-id: ${CLIENT_ID}
       client-secret: ${CLIENT_SECRET}
       use-pkce-with-authorization-code-grant: true
-    path: /docs/
+    path: /world/api/v1/docs/
   api-docs:
-    path: /docs/oas/v3
+    path: /world/api/v1/docs/oas/v3
 
 env:
   keycloak:
@@ -105,9 +103,11 @@ env:
       credentials.secret: ${CLIENT_SECRET}
       http-method-as-scope: true
       paths:
-        - path: /docs/*
+        - path: /world/api/v1/docs/*
           enforcement-mode: disabled
         - path: /actuator/*
+          enforcement-mode: disabled
+        - path: /error/*
           enforcement-mode: disabled
         - path: /
           enforcement-mode: disabled

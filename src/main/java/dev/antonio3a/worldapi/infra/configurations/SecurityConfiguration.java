@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                         )
                 ).authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/docs/**", "/actuator/**", "/").permitAll()
+                                .requestMatchers("/world/api/v1/docs/**", "/actuator/**", "/").permitAll()
                                 .anyRequest().authenticated()
                 ).oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(jwtConfigurer ->

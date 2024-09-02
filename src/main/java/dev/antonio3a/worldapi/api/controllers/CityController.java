@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cities")
+@RequestMapping("/world/api/v1/cities")
 @SecurityRequirements(value = {
         @SecurityRequirement(name = "JWT"),
         @SecurityRequirement(name = "OAUTH2")
