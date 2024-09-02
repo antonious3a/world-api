@@ -22,7 +22,6 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
@@ -37,11 +36,10 @@ public class GlobalExceptionHandler {
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(Exception ex, WebRequest request) {
-        return new ErrorResponse(HttpStatus.NOT_FOUND, List.of(ex.getMessage()), request.getDescription(false));
+        return new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(false));
     }
 
     @ExceptionHandler({
-            DataIntegrityViolationException.class,
             HandlerMethodValidationException.class,
             HttpMessageNotReadableException.class,
             HttpRequestMethodNotSupportedException.class,
@@ -62,12 +60,13 @@ public class GlobalExceptionHandler {
     )
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequestException(Exception ex, WebRequest request) {
-        List<String> messages = switch (ex) {
-            case MethodArgumentNotValidException maex -> maex.getFieldErrors()
+        String message = switch (ex) {
+            case MethodArgumentNotValidException exception -> exception.getFieldErrors()
                     .stream()
                     .map(fieldError -> "field: " + "'" + fieldError.getField() + "'" + " " + fieldError.getDefaultMessage())
-                    .toList();
-            case HandlerMethodValidationException hmex -> hmex.getAllValidationResults()
+                    .reduce((string1, string2) -> string1 + "; " + string2)
+                    .orElse(ex.getMessage());
+            case HandlerMethodValidationException exception -> exception.getAllValidationResults()
                     .stream()
                     .flatMap(parameterValidationResult -> {
                                 if (parameterValidationResult instanceof ParameterErrors parameterErrors) {
@@ -83,10 +82,11 @@ public class GlobalExceptionHandler {
                                 }
                             }
                     )
-                    .toList();
-            default -> List.of(ex.getMessage());
+                    .reduce((string1, string2) -> string1 + "; " + string2)
+                    .orElse(ex.getMessage());
+            default -> ex.getMessage();
         };
-        return new ErrorResponse(HttpStatus.BAD_REQUEST, messages, request.getDescription(false));
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, message, request.getDescription(false));
     }
 
     @ExceptionHandler(AuthenticationException.class)
@@ -101,8 +101,8 @@ public class GlobalExceptionHandler {
                     )
             )
     )
-    public ErrorResponse handleAuthenticationException(AuthenticationException ex, WebRequest request) {
-        return new ErrorResponse(HttpStatus.UNAUTHORIZED, List.of(ex.getMessage()), request.getDescription(false));
+    public ErrorResponse handleUnauthorizedException(AuthenticationException ex, WebRequest request) {
+        return new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), request.getDescription(false));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -117,8 +117,25 @@ public class GlobalExceptionHandler {
                     )
             )
     )
-    public ErrorResponse handleAccessDeniedExceptionException(AccessDeniedException ex, WebRequest request) {
-        return new ErrorResponse(HttpStatus.FORBIDDEN, List.of(ex.getMessage()), request.getDescription(false));
+    public ErrorResponse handleForbiddenException(AccessDeniedException ex, WebRequest request) {
+        return new ErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), request.getDescription(false));
+    }
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(
+                            implementation = ErrorResponse.class
+                    )
+            )
+    )
+    public ErrorResponse handleConflictException(DataIntegrityViolationException ex, WebRequest request) {
+        return new ErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), request.getDescription(false));
     }
 
     @ExceptionHandler(Exception.class)
@@ -135,6 +152,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception ex, WebRequest request) {
         LOGGER.error("Unhandled error (' - ')...", ex);
-        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, List.of(ex.getMessage()), request.getDescription(false));
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getDescription(false));
     }
 }
