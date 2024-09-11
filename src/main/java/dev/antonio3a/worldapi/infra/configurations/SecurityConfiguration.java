@@ -45,7 +45,8 @@ public class SecurityConfiguration {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/world/api/v1/docs/**", "/actuator/**", "/").permitAll()
+                                .requestMatchers("/world/api/v1/docs/**", "/").permitAll()
+                                .requestMatchers("/actuator/info", "/actuator/health", "/actuator/prometheus").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
