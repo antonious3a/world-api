@@ -6,14 +6,14 @@ val modelMapperVersion = "3.2.0"
 val modelMapperModuleRecordVersion = "1.0.0"
 val keycloakVersion = "25.0.4"
 
-extra["springCloudVersion"] = "2023.0.2"
+extra["springCloudVersion"] = "2023.0.3"
 
 group = "dev.antonio3a"
 version = "0.0.1-SNAPSHOT"
 
 plugins {
     java
-    id("org.springframework.boot") version "3.3.3"
+    id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.sonarqube") version "5.0.0.4638"
     id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
@@ -37,14 +37,15 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.graphql:spring-graphql-test")
     testImplementation("org.springframework:spring-webflux")
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -56,8 +57,8 @@ dependencyManagement {
 
 idea {
     module {
-        isDownloadJavadoc = true
-        isDownloadSources = true
+        isDownloadJavadoc = false
+        isDownloadSources = false
     }
 }
 
