@@ -111,6 +111,8 @@ env:
           enforcement-mode: disabled
         - path: /
           enforcement-mode: disabled
+        - path: /ws/*
+          enforcement-mode: disabled
 
     uri: ${KEYCLOAK_URI}
     protocol:
