@@ -20,17 +20,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${spring.rabbitmq.host}")
     private String host;
 
-    @Value("${spring.rabbitmq.port}")
+    @Value("${spring.rabbitmq.stomp.port}")
     private int port;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic");
-        /*registry.enableStompBrokerRelay("/topic")
+        registry.enableStompBrokerRelay("/topic", "/queue")
                 .setRelayHost(host)
                 .setRelayPort(port)
-                .setSystemLogin("username")
-                .setSystemPasscode(password);*/
+                .setSystemLogin(username)
+                .setSystemPasscode(password);
 
         registry.setApplicationDestinationPrefixes("/app")
                 .setUserDestinationPrefix("/user");
