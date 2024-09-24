@@ -5,6 +5,7 @@ val springdocOpenApiVersion = "2.5.0"
 val modelMapperVersion = "3.2.0"
 val modelMapperModuleRecordVersion = "1.0.0"
 val keycloakVersion = "25.0.4"
+val lokiAppenderVersion = "1.5.2"
 
 extra["springCloudVersion"] = "2023.0.3"
 
@@ -22,6 +23,11 @@ plugins {
 }
 
 dependencies {
+    implementation("com.github.loki4j:loki-logback-appender:$lokiAppenderVersion")
+    implementation("io.netty:netty-all")
+    implementation("io.projectreactor.netty:reactor-netty")
+    implementation("io.micrometer:micrometer-tracing-bridge-brave")
+    implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     implementation("org.keycloak:keycloak-policy-enforcer:$keycloakVersion")
     implementation("org.modelmapper:modelmapper:$modelMapperVersion")
     implementation("org.modelmapper:modelmapper-module-record:$modelMapperModuleRecordVersion")
@@ -33,13 +39,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
-    implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
-    implementation("io.netty:netty-all")
-    implementation("io.projectreactor.netty:reactor-netty")
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
