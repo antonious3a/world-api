@@ -1,9 +1,5 @@
 server:
   port: 8280
-  ssl:
-    enabled: false
-    certificate: antonio3a.aaa.crt
-    certificate-private-key: antonio3a.aaa.key
   error:
     whitelabel:
       enabled: false
@@ -26,7 +22,7 @@ spring:
         default-context: applications
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_URI}/world?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:${MYSQL_URI}/world?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
   jpa:
@@ -87,10 +83,12 @@ springdoc:
     displayRequestDuration: true
     oauth:
       realm: ${env.keycloak.realm.name}
-      client-id: ${CLIENT_ID}
-      client-secret: ${CLIENT_SECRET}
+      client-id: ${OAUTH2_CLIENT_ID}
+      client-secret: ${OAUTH2_CLIENT_SECRET}
       use-pkce-with-authorization-code-grant: true
     path: /world/api/v1/docs/
+    syntax-highlight:
+      activated: true
   api-docs:
     path: /world/api/v1/docs/oas/v3
 
@@ -99,8 +97,8 @@ env:
     policy-enforcer:
       realm: ${KEYCLOAK_REALM_NAME}
       auth-server-url: ${KEYCLOAK_URI}
-      resource: ${CLIENT_ID}
-      credentials.secret: ${CLIENT_SECRET}
+      resource: ${OAUTH2_CLIENT_ID}
+      credentials.secret: ${OAUTH2_CLIENT_SECRET}
       http-method-as-scope: true
       paths:
         - path: /world/api/v1/docs/*
@@ -126,6 +124,6 @@ env:
 
 info:
   app:
-    ame: ${spring.application.name}
+    name: ${spring.application.name}
     version: 0.0.1
     description: ${spring.application.name} application
