@@ -14,9 +14,9 @@ spring:
     import: optional:vault://
   cloud:
     vault:
-      uri: ${AAA_VAULT_URI}
+      uri: ${VAULT_URI}
       authentication: token
-      token: ${AAA_VAULT_TOKEN}
+      token: ${VAULT_TOKEN}
       kv:
         backend: key-value
         default-context: applications
